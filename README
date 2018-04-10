@@ -1,0 +1,34 @@
+该框架搭建全过程
+第一步：ssm搭建
+1.导入ssm的相关jar包，由maven管理
+    (1)pom.xml注意设置编码格式为UTF-8;
+    (2)pom.xml可以统一设置版本号, eg:<spring-version>4.0.4.RELEASE</spring-version>
+2.编辑ssm的配置文件
+    (1)spring-dao.xml
+        1)先配置PropertyPlaceholderConfigurer指向db.properties配置文件
+        2)配置阿里德鲁伊druid数据库连接池DruidDataSource==>数据源dataSource
+        3)配置mybatis,创建SqlSessionFactory,同时指向数据源dataSource
+            并扫描mybatis全局配置mybatis-config.xml(configLocation),实体类typeAliasesPackage,映射文件mapperLocations,dao接口MapperScannerConfigurer
+    (2)spring-service.xml
+        1)扫描包(包含子包)下所有使用注解的类型context:component-scan
+        2)配置事务管理器DataSourceTransactionManager
+        3)开启注解管理事务行为tx:annotation-driven  指向事务管理器
+    (3)spring-web.xml
+        1)开启SpringMVC注解模式mvc:annotation-driven
+        2)静态资源默认servlet配置mvc:default-servlet-handler
+        3)扫描包Controller(context:component-scan)
+        4)对静态资源文件的访问mvc:resources location="/resources/" mapping="/resources/**/"
+        5)视图解析器配置MyMultipleViewResolver(自定义视图解析器,需要自己创建一个)
+        6)全局异常捕捉MyExceptionResolver(自定义异常解析器,需要自己创建一个)
+    (4)mybatis-config.xml
+        1)配置全局属性
+            使全局的映射器启用或禁用缓存cacheEnabled
+            这是默认的执行类型defaultExecutorType(REUSE)
+            获取数据库自增主键值useGeneratedKeys
+    (5)web.xml
+        1)配置servlet去加载spring的配置文件DispatcherServlet
+        2)servlet-mapping
+3.按照mvc模式写一个例子
+    1)写实体类,映射文件,mapper接口,业务层接口,业务层实现类,控制层
+    2)写jsp页面 接收后台传递数据处理
+    3)部署tomcat运行

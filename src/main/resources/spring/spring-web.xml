@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.alibaba.com/schema/stat http://www.alibaba.com/schema/stat.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd ">
+
+    <!--配置springMVC-->
+    <!--1.开启springMVC注解模式-->
+    <!-- 简化配置：
+    (1)自动注册DefaultAnootationHandlerMapping,AnotationMethodHandlerAdapter
+    (2)提供一些列：数据绑定，数字和日期的format @NumberFormat, @DateTimeFormat, xml,json默认读写支持-->
+    <mvc:annotation-driven/>
+
+    <!--2.静态资源默认servlet配置
+    (1)加入对静态资源的处理：js,gif,png
+    (2)允许使用"/"做整体映射-->
+    <mvc:default-servlet-handler/>
+
+    <!--扫描controller-->
+    <context:component-scan base-package="com.grow.controller">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!--对静态资源文件的访问 restful-->
+    <mvc:resources mapping="/resources/**/" location="/resources/"/>
+
+    <!--spring视图解析器-->
+    <bean id="viewResolver" class="com.grow.spring.resolver.MyMultipleViewResolver">
+        <property name="defaultKey" value="jsp"/>
+        <property name="resolvers">
+            <map>
+                <entry key="jsp">
+                    <!--JSP视图解析器-->
+                    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+                        <property name="prefix" value="/WEB-INF/jsp/"/>
+                        <property name="suffix" value=".jsp"/>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <!--全局异常捕捉-->
+    <bean class="com.grow.spring.resolver.MyExceptionResolver"/>
+</beans>
