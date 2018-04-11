@@ -21,7 +21,7 @@
 
     <!--扫描controller-->
     <context:component-scan base-package="com.grow.controller">
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
     <!--对静态资源文件的访问 restful-->
