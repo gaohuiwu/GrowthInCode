@@ -1,81 +1,96 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!--debug="true" : 打印logback内部状态（默认当logback运行出错时才会打印内部状态 ），配置该属性后打印条件如下（同时满足）：
-    1、找到配置文件 2、配置文件是一个格式正确的xml文件 也可编程实现打印内部状态，例如： LoggerContext lc = (LoggerContext)
-    LoggerFactory.getILoggerFactory(); StatusPrinter.print(lc); -->
-<!-- scan="true" ： 自动扫描该配置文件，若有修改则重新加载该配置文件 -->
-<!-- scanPeriod="30 seconds" : 配置自动扫面时间间隔（单位可以是：milliseconds, seconds, minutes
-    or hours，默认为：milliseconds）， 默认为1分钟，scan="true"时该配置才会生效 -->
 <configuration debug="false" scan="true" scanPeriod="30 seconds" packagingData="true">
-    <!-- 用来设置上下文名称，每个logger都关联到logger上下文 设置 logger context 名称,一旦设置不可改变，默认为default -->
-    <contextName>myAppName</contextName>
-    <!--子节点<appender>：负责写日志的组件，它有两个必要属性name和class。name指定appender名称，class指定appender的全限定名-->
-    <!--ConsoleAppender 把日志输出到控制台-->
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+
+    <!-- 定义日志文件名称,与工程名一致 -->
+    <property name="APP_NAME" value="GrowthInCode"/>
+
+    <!-- 定义日志的根目录 -->
+    <property name="LOG_HOME" value="../logs"/>
+
+    <!-- 设置 logger context 名称,一旦设置不可改变，默认为default -->
+    <contextName>growThInCode</contextName>
+
+    <!--控制台输出console-->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <!-- encoders are by default assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder -->
-        <!--<encoder>：对日志进行格式化-->
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            </layout>
         </encoder>
     </appender>
 
-    <!--FileAppender：把日志添加到文件-->
+    <!-- 正常文件输出设置 -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- 当前活动日志文件名 -->
-        <!--<file>：被写入的文件名，可以是相对目录，也可以是绝对目录，如果上级目录不存在会自动创建，没有默认值。-->
-        <file>./my_log.log</file>
-        <!--<append>：如果是 true，日志被追加到文件结尾，如果是 false，清空现存文件，默认是true。-->
-        <!--<append>true</append>-->
+        <file>${LOG_HOME}/${APP_NAME}.log</file>
+
         <!-- 文件滚动策略根据%d{patter}中的“patter”而定，此处为每天产生一个文件 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 归档文件名“.zip或.gz结尾”,表示归档文件自动压缩 -->
-            <FileNamePattern>./my_log%d{yyyyMMdd}.log.zip</FileNamePattern>
-            <!--可选节点，控制保留的归档文件的最大数量，超出数量就删除旧文件  30就是30个月-->
-            <maxHistory>30</maxHistory>
+            <FileNamePattern>${LOG_HOME}/${APP_NAME}/${APP_NAME}-%d{yyyy-MM-dd}-%i.zip</FileNamePattern>
+            <!--归档文件的最大数量,超出数量就删除旧文件-->
+            <maxHistory>365</maxHistory>
+            <maxFileSize>50MB</maxFileSize>
+            <totalSizeCap>20GB</totalSizeCap>
         </rollingPolicy>
-
-        <!--rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <fileNamePattern>renhai%i.log</fileNamePattern>
-            <minIndex>1</minIndex>
-            <maxIndex>10</maxIndex>
-        </rollingPolicy>
-
-        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <maxFileSize>20MB</maxFileSize>
-        </triggeringPolicy-->
-
-        <!-- <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-          rollover daily
-          <fileNamePattern>mylog-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-           each file should be at most 30MB, keep 60 days worth of history, but at most 20GB
-           <maxFileSize>30MB</maxFileSize>
-           <maxHistory>60</maxHistory>
-           <totalSizeCap>20GB</totalSizeCap>
-        </rollingPolicy> -->
-
 
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS}[%-5level][%thread]%logger{36} - %msg%n</pattern>
-            <!-- <pattern>%d{HH:mm:ss.SSS}[%-5level][%thread] - %msg%n</pattern> -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}[%-5level][%thread]%logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <!-- 日志级别若没显示定义，则继承最近的父logger（该logger需显示定义level,直到rootLogger）的日志级别-->
-    <!-- logger的appender默认具有累加性（默认日志输出到当前logger的appender和所有祖先logger的appender中），可通过配置 “additivity”属性修改默认行为-->
-    <!-- show parameters for hibernate sql 专为 Hibernate 定制 -->
-    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" />
-    <logger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="DEBUG" />
-    <logger name="org.hibernate.SQL" level="DEBUG" />
-    <logger name="org.hibernate.engine.QueryParameters" level="DEBUG" />
-    <logger name="org.hibernate.engine.query.HQLQueryPlan" level="DEBUG" />
+    <!-- 异常文件输出设置，将异常堆栈另外保存一份到单独的文件中，方便查找 -->
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 当前活动日志文件名 -->
+        <file>${LOG_HOME}/${APP_NAME}.error.log</file>
+
+        <!-- 文件滚动策略根据%d{patter}中的“patter”而定，此处为每天产生一个文件 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 归档文件名“.zip或.gz结尾”,表示归档文件自动压缩 -->
+            <FileNamePattern>${LOG_HOME}/${APP_NAME}/${APP_NAME}.error-%d{yyyy-MM-dd}-%i.zip</FileNamePattern>
+            <!--归档文件的最大数量,超出数量就删除旧文件-->
+            <maxHistory>365</maxHistory>
+            <maxFileSize>50MB</maxFileSize>
+            <totalSizeCap>20GB</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}[%-5level][%thread]%logger{36} - %msg%n</pattern>
+        </encoder>
+
+        <!--只打印错误日志-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <!--只打印警告日志-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
 
     <!--myibatis log configure-->
     <logger name="com.apache.ibatis" level="TRACE"/>
     <logger name="java.sql.Connection" level="DEBUG"/>
     <logger name="java.sql.Statement" level="DEBUG"/>
     <logger name="java.sql.PreparedStatement" level="DEBUG"/>
+    <!-- Spring framework logger -->
+    <logger name="org.springframework" level="info"></logger>
+    <!-- com.grow -->
+    <logger name="com.grow" level="info"></logger>
+
+    <logger name="dao" level="debug"/>
+
+
     <!-- 至多只能配置一个root -->
-    <root level="debug">
-        <appender-ref ref="STDOUT"/>
+    <root level="info">
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
+        <appender-ref ref="FILE_ERROR"/>
     </root>
+
 </configuration>
