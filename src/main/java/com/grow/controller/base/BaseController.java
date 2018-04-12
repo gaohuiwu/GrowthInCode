@@ -4,6 +4,8 @@ import com.grow.utils.CodeConstants;
 import com.grow.utils.CreateIdUtil;
 import com.grow.utils.PageData;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
@@ -11,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
+
 
 /**
  * FileName:BaseController
@@ -21,6 +24,7 @@ import java.util.Map;
 public class BaseController {
 
     /*这边要增加日志控制输出*/
+    private final static Logger logger = LoggerFactory.getLogger(BaseController.class);
 
     /**
      * 得到PageData
@@ -72,6 +76,7 @@ public class BaseController {
         map.put(CodeConstants.OPER_DATA_KEY, obj);
         return map;
     }*/
+
     /**
      * 得到ModelAndView
      */
@@ -131,7 +136,7 @@ public class BaseController {
 
     }
 
-    /*public static void logBefore(Logger logger, String interfaceName) {
+    public static void logBefore(Logger logger, String interfaceName) {
         logger.info("");
         logger.info("start");
         logger.info(interfaceName);
@@ -140,5 +145,5 @@ public class BaseController {
     public static void logAfter(Logger logger) {
         logger.info("end");
         logger.info("");
-    }*/
+    }
 }

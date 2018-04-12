@@ -21,6 +21,7 @@
         <maven.compiler.target>1.7</maven.compiler.target>
         <!--统一设置spring的版本-->
         <spring.version>4.0.4.RELEASE</spring.version>
+        <logback.version>1.1.1</logback.version>
     </properties>
 
     <dependencies>
@@ -35,15 +36,19 @@
         <!--日志-->
         <!--实现slf4接口并整合-->
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.22</version>
+        </dependency>
+        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.1.1</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>slf4j-api</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-            </exclusions>
+            <version>${logback.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.version}</version>
         </dependency>
 
         <!--数据库-->
@@ -193,7 +198,6 @@
             <version>0.9.5</version>
         </dependency>
     </dependencies>
-
 
 
     <build>

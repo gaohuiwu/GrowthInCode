@@ -77,3 +77,10 @@
         若后台传递为List<entity>,就用velocity的foreach接收展示;
         但是统一后台回显的格式为List<Map<String,Object>>  配合这个table组件
 
+    访问地址：http://localhost:8080/example/examplePage   运行可见效果
+
+第六步：使用 logback + slf4j 进行日志记录
+    (1)加入slf4j-api,logback-classic两个jar包(pom.xml)
+    (2)编写logback.xml(位于classpath目录下，此处为src/main/resources目录)
+    (3)在程序中使用Logger logger = LoggerFactory.getLogger(Test.class);
+
