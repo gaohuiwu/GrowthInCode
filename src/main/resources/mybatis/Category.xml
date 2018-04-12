@@ -4,11 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.grow.dao.CategoryMapper">
-    <insert id="add" parameterType="Category" >
+    <insert id="add" parameterType="Category">
         insert into category_ ( name ) values (#{name})
     </insert>
 
-    <delete id="delete" parameterType="Category" >
+    <delete id="delete" parameterType="Category">
         delete from category_ where id= #{id}
     </delete>
 
@@ -16,10 +16,13 @@
         select * from   category_  where id= #{id}
     </select>
 
-    <update id="update" parameterType="Category" >
+    <update id="update" parameterType="Category">
         update category_ set name=#{name} where id=#{id}
     </update>
-    <select id="list" resultType="Category">
-        select * from   category_
+    <select id="list" resultType="map">
+        SELECT
+        A.id   "uId",
+        A.name "uName"
+        FROM category_ A
     </select>
 </mapper>

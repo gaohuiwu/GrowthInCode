@@ -1,12 +1,12 @@
 package com.grow.service.impl;
 
 import com.grow.dao.CategoryMapper;
-import com.grow.pojo.Category;
 import com.grow.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * FileName:CategoryServiceImpl
@@ -21,7 +21,7 @@ public class CategoryServiceImpl implements CategoryService {
     CategoryMapper categoryMapper;
 
     @Override
-    public List<Category> list() {
+    public List<Map<String, Object>> list() {
         return categoryMapper.list();
     }
 }

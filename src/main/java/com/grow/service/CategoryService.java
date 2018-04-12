@@ -1,8 +1,7 @@
 package com.grow.service;
 
-import com.grow.pojo.Category;
-
 import java.util.List;
+import java.util.Map;
 
 /**
  * FileName:CategoryService
@@ -12,5 +11,5 @@ import java.util.List;
  */
 public interface CategoryService {
 
-    List<Category> list();
+    List<Map<String,Object>> list();
 }

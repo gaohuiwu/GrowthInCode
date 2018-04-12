@@ -1,12 +1,12 @@
 package com.grow.utils;
 
 /**
- * FileName:CodeCostants
+ * FileName:CodeConstants
  * Author:  ghw06
  * Date:    2018/4/11 10:03
  * Description: 公用常量
  */
-public class CodeCostants {
+public class CodeConstants {
 
     public final static int OPER_RESULT_VALUE = 0;
     public final static String OPER_RESULT_KEY = "code";

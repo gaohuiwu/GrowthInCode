@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <tools>
-    <toolbox scope="application">
+    <!-- 这里可以设置一些静态的数据 $gao就可以取到value-->
+    <data key="gao" value="614"></data>
 
+    <!-- 这里可以设置一些动态的数据，因为是由后台动态传递过来的 $category.实体类的属性名-->
+    <toolbox scope="application">
+        <!--<tool key="category" class="com.grow.pojo.Category"></tool>-->
     </toolbox>
 </tools>

@@ -1,6 +1,5 @@
 package com.grow.controller;
 
-import com.grow.pojo.Category;
 import com.grow.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * FileName:CategoryController
@@ -25,7 +25,7 @@ public class CategoryController {
     @RequestMapping(value = "/list")
     public ModelAndView listCategory() {
         ModelAndView mv = new ModelAndView();
-        List<Category> cs = categoryService.list();
+        List<Map<String,Object>> cs = categoryService.list();
 
         // 放入转发参数
         mv.addObject("cs", cs);

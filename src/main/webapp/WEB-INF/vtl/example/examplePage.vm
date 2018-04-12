@@ -4,8 +4,8 @@
     #parse('common/meta.vm')
     <title>分页列子</title>
     <link rel="stylesheet" href="$contextPath/resources/plugins/table.min.css">
-#*<link rel="stylesheet" href="$contextPath/resources/vendor/sweetalert/sweetalert.css">*#
-#*<link rel="stylesheet" href="$contextPath/resources/vendor/toastr/toastr.min.css">*#
+<link rel="stylesheet" href="$contextPath/resources/vendor/sweetalert/sweetalert.css">
+<link rel="stylesheet" href="$contextPath/resources/vendor/toastr/toastr.min.css">
 </head>
 <body id="myModal">
 <div class="wrapper wrapper-content animated fadeInRight container-fluid">
@@ -32,10 +32,10 @@
     </div>
 </div>
     #parse('common/lib.vm')
-#*<script src="$contextPath/resources/vendor/layer/layer.js"></script>*#
+<script src="$contextPath/resources/vendor/layer/layer.js"></script>
 <script src="$contextPath/resources/plugins/table.min.js"></script>
-#*<script src="$contextPath/resources/vendor/sweetalert/sweetalert.min.js"></script>
-<script src="$contextPath/resources/vendor/toastr/toastr.min.js"></script>*#
+<script src="$contextPath/resources/vendor/sweetalert/sweetalert.min.js"></script>
+<script src="$contextPath/resources/vendor/toastr/toastr.min.js"></script>
 <script>
     var _table;
     _table = plugin.table.create({
@@ -44,7 +44,7 @@
         formId: '#search-form',
         columns: [{
             title: '序号',
-            field: 'id',
+            field: 'uId',
             align: 'center',
             valign: 'middle',
             halign: "center",
@@ -57,7 +57,7 @@
             }
         }, {
             title: '类别',
-            field: 'name',
+            field: 'uName',
             align: 'center',
             valign: 'middle',
             halign: "center",

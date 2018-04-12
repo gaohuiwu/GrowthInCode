@@ -47,7 +47,7 @@
         1)配置bean(VelocityConfigurer)==>resourceLoaderPath和velocityProperties
         2)配置velocityProperties时要新增macro/macro.vm   要了解下这个macro.vm是什么作用
         3)配置velocity视图解析器
-            toolboxConfigLocation要新增toolbox.xml  要了解下这个toolbox.xml是什么作用 toolbox是velocity模板的自定义扩展，有点像jsp自定义jstl
+            toolboxConfigLocation要新增toolbox.xml  可以定义静态资源和后台传递的动态数据  用$.keyName去获取
             viewClass 要自定义一个VelocityToolbox2View   要知道为什么自定义个 作用
 
 第四步：整合bootstrap前端框架
@@ -65,4 +65,15 @@
             新增resources/js/vendor.dll.min.js
             新增resources/js/common/lib.min.js
             新增resources/plugins/base.min.js
+
+第五步：加入分页pageHelper  完成表格组件的测试页面examplePage.vm
+    (1)加入pagehelper,jsqlparser两个jar包(pom.xml)
+    (2)新增mybatis-config.xml的pageHelper配置(源码的重要性！)
+        此处要记住如果用的是pageHelper的版本是5.0.0,那么配置plugin interceptor="com.github.pagehelper.PageHelper会报错ClassCastException
+            因此要改成plugin interceptor="com.github.pagehelper.PageInterceptor实现interceptor接口
+    (3)copy一份原来的PageInfo,自定义一份
+    (4)新增一个PageData 继承HasMap  在BaseController调用    作用？
+    (5)后台传递数据到前台，前台接收
+        若后台传递为List<entity>,就用velocity的foreach接收展示;
+        但是统一后台回显的格式为List<Map<String,Object>>  配合这个table组件
 
