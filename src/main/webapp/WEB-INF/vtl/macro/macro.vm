@@ -1,0 +1,6 @@
+#macro(dicSelect $dicList $initVal)
+<option value=""></option>
+    #foreach( $dic in $dicList )
+    <option value="$dic.dicCode" #if( $initVal == $dic.dicCode) selected #end>$dic.dicName</option>
+    #end
+#end

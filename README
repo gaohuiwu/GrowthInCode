@@ -32,6 +32,7 @@
     1)写实体类,映射文件,mapper接口,业务层接口,业务层实现类,控制层
     2)写jsp页面 接收后台传递数据处理
     3)部署tomcat运行
+
 第二步：增加常见工具类
     AssertUtil：断言   用于验证传入的参数是否为null,如果是则抛非法参数异常,异常信息可以自己指定
     StringExUtil：字符串工具类,有点鸡肋,拓展的功能基本在StringUtils有,建议看源码
@@ -39,3 +40,12 @@
     RegexCostants：正则表达式常量   收集所有要验证的正则表达式   供正则工具类使用
     RegexUtil：正则工具类 验证
     DateExUtil：DateUtil的拓展工具类   引入ImmutableMap需要google-collections的jar包
+
+第三步：整合velocity引擎
+    (1)加入velocity,velocity-tools,spring-context-support三个jar包(pom.xml)
+    (2)新增spring-web.xml的velocity配置
+        1)配置bean(VelocityConfigurer)==>resourceLoaderPath和velocityProperties
+        2)配置velocityProperties时要新增macro/macro.vm   要了解下这个macro.vm是什么作用
+        3)配置velocity视图解析器
+            toolboxConfigLocation要新增toolbox.xml  要了解下这个toolbox.xml是什么作用 toolbox是velocity模板的自定义扩展，有点像jsp自定义jstl
+            viewClass 要自定义一个VelocityToolbox2View   要知道为什么自定义个 作用
