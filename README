@@ -49,3 +49,20 @@
         3)配置velocity视图解析器
             toolboxConfigLocation要新增toolbox.xml  要了解下这个toolbox.xml是什么作用 toolbox是velocity模板的自定义扩展，有点像jsp自定义jstl
             viewClass 要自定义一个VelocityToolbox2View   要知道为什么自定义个 作用
+
+第四步：整合bootstrap前端框架
+    (1)在webapp/resources 底下加入boostrap源包的dist文件
+    (2)在webapp/resources/js 新建vendor文件夹,专门用来引入第三方组件
+        加入font-awesome组件,提供可缩放矢量图标
+        加入jquery组件
+        ...(可以更多)
+    (3)做一个具有表格组件的测试页面examplePage.vm
+        1)在webapp/resources/plugins 放入自定义组件：加入table组件(table.min.css + table.min.js)
+        2)#parse('common/meta.vm')  新建一个meta.vm
+            修改前面引入的font-awesome的css文件路径
+            引入新增的meta.min.css(新建)
+        3)#parse('common/lib.vm') 新建一个lib.vm
+            新增resources/js/vendor.dll.min.js
+            新增resources/js/common/lib.min.js
+            新增resources/plugins/base.min.js
+

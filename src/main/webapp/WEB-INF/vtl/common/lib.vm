@@ -1,0 +1,3 @@
+<script src="$contextPath/resources/js/vendor.dll.min.js"></script>
+<script src="$contextPath/resources/js/common/lib.min.js?6f356d32a3d011b9928d92a8e6a96079"></script>
+<script src="$contextPath/resources/plugins/base.min.js"></script>

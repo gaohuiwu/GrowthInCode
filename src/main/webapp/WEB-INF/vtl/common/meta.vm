@@ -1,0 +1,12 @@
+#set($contextPath = "$!{request.contextPath}")
+<script>
+    var contextPath ='$contextPath';
+    var baseUrl='$contextPath';
+    var imgUrl='$toolUtil.getImgPre()';
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="renderer" content="webkit">
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="stylesheet" href="$contextPath/resources/vendor/font-awesome-5.0.9/css/fontawesome.min.css">
+<link rel="stylesheet" href="$contextPath/resources/styles/common/meta.min.css?t=6">

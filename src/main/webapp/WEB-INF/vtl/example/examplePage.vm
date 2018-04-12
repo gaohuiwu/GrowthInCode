@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    #parse('common/meta.vm')
+    <title>分页列子</title>
+    <link rel="stylesheet" href="$contextPath/resources/plugins/table.min.css">
+#*<link rel="stylesheet" href="$contextPath/resources/vendor/sweetalert/sweetalert.css">*#
+#*<link rel="stylesheet" href="$contextPath/resources/vendor/toastr/toastr.min.css">*#
+</head>
+<body id="myModal">
+<div class="wrapper wrapper-content animated fadeInRight container-fluid">
+    <div class="row show-grid">
+        <div class="col-sm-12">
+            <form class="form-inline" id="search-form" method="post">
+                <div class="form-group">
+                    <input class="form-control" id="batchDesc" name="batchDesc" placeholder="请输入batchDesc" value="">
+                </div>
+                <button type="submit" class="btn btn-query btn" id="btn-search">
+                    <i class="fa fa-search"></i>查询
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="row" style="50px">
+        <p></p>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <table id="investors-list" class="table table-hover"></table>
+            <div id="investors-pager"></div>
+        </div>
+    </div>
+</div>
+    #parse('common/lib.vm')
+#*<script src="$contextPath/resources/vendor/layer/layer.js"></script>*#
+<script src="$contextPath/resources/plugins/table.min.js"></script>
+#*<script src="$contextPath/resources/vendor/sweetalert/sweetalert.min.js"></script>
+<script src="$contextPath/resources/vendor/toastr/toastr.min.js"></script>*#
+<script>
+    var _table;
+    _table = plugin.table.create({
+        container: '#investors-list',
+        api: '$contextPath/example/examplePage',
+        formId: '#search-form',
+        columns: [{
+            title: '序号',
+            field: 'id',
+            align: 'center',
+            valign: 'middle',
+            halign: "center",
+            sortable: false,
+            formatter: function (value, row, index) {
+                if (!value)
+                    return '-';
+                else
+                    return value;
+            }
+        }, {
+            title: '类别',
+            field: 'name',
+            align: 'center',
+            valign: 'middle',
+            halign: "center",
+            sortable: false,
+            formatter: function (value, row, index) {
+                if (!value)
+                    return '-';
+                else
+                    return value;
+            }
+        }]
+    });
+
+    $('#btn-search').on('click', function (e) {
+        e.preventDefault();
+        _table.reload('#search-form', '#investors-list', 1);
+    });
+
+</script>
+</body>
+</html>
