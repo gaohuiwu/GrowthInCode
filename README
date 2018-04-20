@@ -84,3 +84,10 @@
     (2)编写logback.xml(位于classpath目录下，此处为src/main/resources目录)
     (3)在程序中使用Logger logger = LoggerFactory.getLogger(Test.class);
 
+第七步：整合注解redis
+    (1)pom加入依赖：spring-data-redis,jedis
+    (2)添加 spring-redis 配置
+    (3)添加 redis.properties
+    (4)编写自定义 redis 配置类
+    (5)在你喜欢的地方进行注解缓存
+

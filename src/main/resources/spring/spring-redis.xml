@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- Spring自动将该包目录下标记为@Service的所有类作为spring的Bean -->
+    <context:component-scan base-package="com.grow.service"/>
+
+    <!--载入 redis 配置文件-->
+    <context:property-placeholder location="classpath:redis.properties" ignore-unresolvable="true" order="2"/>
+
+
+    <!--jedis配置-->
+    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxIdle" value="${redis.maxIdle}"/>
+        <property name="maxWaitMillis" value="${redis.maxWait}"/>
+        <property name="testOnBorrow" value="${redis.testOnBorrow}"/>
+        <property name="testOnReturn" value="true"/>
+        <property name="testWhileIdle" value="true"/>
+    </bean>
+
+    <!--redis服务器中心-->
+    <bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <constructor-arg name="poolConfig" ref="poolConfig"/>
+        <property name="port" value="${redis.port}"/>
+        <property name="hostName" value="${redis.host}"/>
+        <property name="password" value="${redis.password}"/>
+        <property name="timeout" value="${redis.timeout}"/>
+    </bean>
+
+    <!-- 配置RedisTemplate -->
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="connectionFactory"/>
+    </bean>
+
+    <!-- 配置RedisCacheManager -->
+    <bean id="redisCacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
+        <constructor-arg name="redisOperations" ref="redisTemplate"/>
+        <property name="defaultExpiration" value="${redis.expiration}"/>
+    </bean>
+
+    <!-- 配置RedisCacheConfig -->
+    <bean id="redisCacheConfig" class="com.grow.utils.redis.RedisCacheConfig">
+        <constructor-arg ref="connectionFactory"/>
+        <constructor-arg ref="redisTemplate"/>
+        <constructor-arg ref="redisCacheManager"/>
+    </bean>
+</beans>
