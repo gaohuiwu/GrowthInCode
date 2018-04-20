@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	#parse('common/meta.vm')
+	<title>统计主页</title>
+	<link rel="stylesheet" href="$contextPath/resources/styles/investors/lists.css">
+	<link rel="stylesheet" href="$contextPath/resources/vendor/sweetalert/sweetalert.css">
+	<link rel="stylesheet" href="$contextPath/resources/vendor/toastr/toastr.min.css">
+</head>
+<body id="myModal">
+	<div class="wrapper wrapper-content animated fadeInRight container-fluid">
+		<div class="row">
+			<div class="col-sm-12">
+				<button type="button" class="btn btn-primary" id="btn-add">
+			  		<i class="fa fa-plus"></i>
+			  		添加投资人
+			  	</button>
+			</div>
+		</div>
+		<div class="row show-grid">
+			<div class="col-sm-12">
+				<form class="form-inline" id="search-form" method="post">
+				  	<div class="form-group">
+				    	<label for="inversors">投资人标签：</label>
+				    	<select class="form-control" id="inversors-tag" name="search_tag">
+				    		#foreach($tag in $shareholderTags)
+				    		<option value="$tag.value">$tag.name</option>
+				    		#end
+                        </select>
+				  	</div>
+				  	
+				  	<div class="form-group">
+				    	<label for="mobilephone">手机号：</label>
+				    	<input class="form-control" id="search_mobileNumber" name="search_mobileNumber" placeholder="请输入">
+				  	</div>
+				  	<div class="form-group">
+				    	<label for="name">姓名：</label>
+				    	<input class="form-control" id="search_realName" name="search_realName" placeholder="请输入">
+				  	</div>
+				  	<button type="submit" class="btn btn-primary" id="btn-search">
+				  		<i class="fa fa-search"></i>查询
+				  	</button>
+				  	<button type="button" class="btn btn-info" id="btn-export">
+				  		<i class="fa fa-file-excel-o"></i>
+				  		导出Excel
+				  	</button>
+				</form>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<table id="investors-list" class="table table-hover"></table>
+    			<div id="investors-pager"></div>
+			</div>
+		</div>
+	</div>
+	#parse('common/lib.vm')
+	#parse('public/table.vm')
+	<script src="$contextPath/resources/vendor/layer/layer.js"></script>
+	<script src="$contextPath/resources/js/investors/lists.js"></script>
+	<script src="$contextPath/resources/vendor/sweetalert/sweetalert.min.js"></script>
+	<script src="$contextPath/resources/vendor/toastr/toastr.min.js"></script>
+	<script>
+		/*investors.lists.init({
+			api: '/api/investors-list',
+			exportApi: '/api/investors-export',
+			tableEl: '#investors-list',
+			pagerEl: '#investors-pager',
+			searchEl: '#btn-search',
+			exportEl: '#btn-export',
+			formEl: '#search-form',
+			addEl: '#btn-add',
+			addUrl: '/investors/add',
+			settingStoreUrl: '/investors/stores',
+			pageSize: 30
+		});*/
+	</script>
+	<script>
+		var _table;
+		_table = plugin.tableindex.create({
+			container: '#investors-list',
+	            api: '/api/investors-list',
+	            formId:'#search-form',
+	            columns: [{
+	                checkbox: true,
+	                visible:true,
+	            },{ 
+	                title:'id',
+	                field: 'id', 
+	                align: 'center',
+	                valign: 'middle',
+	                halign: "center",
+	                sortable:true,
+	                formatter: function (value, row, index) {
+	                    return index + 1;
+	                }
+	            },{ 
+	                title:'act',
+	                field: 'act', 
+	                formatter: function (value, row, index) {
+	                    return '<button class="btn btn-primary" data-id="' + row['id'] + '"  id="modifytable-btn">保存</button>';
+	                }
+	            }]
+		})
+	
+		$('#btn-search').on('click',function(e){
+			e.preventDefault();
+			_table.reload('#search-form','#investors-list');
+		});
+	
+		$('body').on('click','#modifytable-btn',function(){
+			alert($(this).data('id'));
+
+		})
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	#parse('common/meta.vm')
+	<!--<link rel="stylesheet" href="$contextPath/resources/vendor/webuploader/css/webuploader.css">-->
+	<link rel="stylesheet" href="$contextPath/resources/styles/account/cost.min.css">
+	<link rel="stylesheet" href="$contextPath/resources/plugins/validator/index.css">
+	<title>记账-成本</title>
+</head>
+<body>
+	<div class="animated fadeInRight">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="tabs-container">
+                    <ul class="nav nav-tabs">
+                        <li class="active" data-type="0">
+                        	<a data-toggle="tab" href="#tab-1" aria-expanded="false">固定成本
+                        	</a>
+                        </li>
+                        <li data-type="1">
+                        	<a data-toggle="tab" href="#tab-1" aria-expanded="true">
+                        		变动成本
+                        	</a>
+                        </li>
+                        <li data-type="2" data-url="/account/income" data-load="false">
+                        	<a data-toggle="tab" href="#tab-2" aria-expanded="true">
+                        		其它收入
+                        	</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content panel-body">
+                        <div id="tab-1" class="tab-pane active">
+                        	<div class="row">
+                        		<div class="col-sm-6">
+                        			<div class="ibox float-e-margins">
+					                    <div class="ibox-title">
+					                        <h5 id="cost-title">记录门店固定成本（门店开业时，投入的固定资金）</h5>
+					                    </div>
+					                    <div class="ibox-content">
+					                        <form class="form-horizontal m-t" id="costForm">
+					                        	<input type="hidden" id="costType" name="costType" value="0">
+					                            <div class="form-group">
+					                                <label class="col-sm-3 control-label">所属城市：</label>
+					                                <div class="col-sm-8">
+					                                    <select data-placeholder="请选择城市..." class="form-control chosen-select required" name="city" id="select-city"  title="请选择城市" required="">
+												    		<option value="">请选择筛选门店</option>
+															#foreach($city in $citys)
+												    		<option value="$city.cityId">$city.cityName</option>
+												    		#end
+								                        </select>
+					                                </div>
+					                            </div>
+					                            <div class="form-group">
+					                                <label class="col-sm-3 control-label">选择门店：</label>
+					                                <div class="col-sm-8">
+					                                    <select data-placeholder="请选择门店..." title="请选择门店" class="form-control chosen-select"  required="" name="store" id="select-store">
+												    		<option value="">请选择筛选门店</option>
+															#foreach($store in $stores)
+												    		<option value="$store.orgId">$store.orgName</option>
+												    		#end
+								                        </select>
+					                                </div>
+					                            </div>
+					                            <div class="form-group">
+					                                <label class="col-sm-3 control-label">投入年月：</label>
+					                                <div class="col-sm-8">
+					                                	<div class="input-group date">
+                            
+							                                <input type="text" class="form-control invendor-date month-calendar"  name="opYearMonth" id="add-date">
+							                            	<span class="input-group-addon">
+							                            		<i class="fa fa-calendar"></i>
+							                            	</span>
+							                            </div>
+					                                    
+					                                </div>
+					                            </div>
+					                            <div id="funds-wrap">
+					                            </div>
+					                            <div class="form-group">
+					                                <label class="col-sm-3 control-label">说明：</label>
+					                                <div class="col-sm-8">
+					                                    <textarea name="remarks" class="form-control" ></textarea>
+					                                </div>
+					                            </div>
+					                            <div class="form-group">
+					                                <div class="col-sm-4 col-sm-offset-3">
+					                                    <button class="btn btn-primary" type="submit">提交</button>
+					                                    <button class="btn btn-warning" type="reset">重置</button>
+					                                </div>
+					                            </div>
+					                        </form>
+					                    </div>
+					                </div>
+                        		</div>
+                        		<div class="col-sm-6">
+                        			<div class="ibox float-e-margins">
+					                    <div class="ibox-title">
+					                        <h5>历史清单明细</h5>
+					                        <div class="ibox-tools">
+					                            <a id="importList" class="btn btn-sm btn-primary">
+					                            	<i class="fa fa-rotate-left"></i> 导入清单
+												</a>
+					                        </div>
+					                    </div>
+					                    <div class="row show-grid">
+											<div class="col-sm-12">
+												<form class="form-inline" id="search-form" method="post">
+												  	<div class="form-group">
+												    	<div class="input-group date">
+                            
+							                                <input type="text" class="form-control invendor-date month-calendar" id="list-date" name="date">
+							                            	<span class="input-group-addon">
+							                            		<i class="fa fa-calendar"></i>
+							                            	</span>
+							                            </div>
+												  	</div>
+												  	<div class="form-group">
+												    	<select data-placeholder="请选择门店..." class="form-control chosen-select"  required="" name="store" id="search-store">
+												    		<option value="0">请选择筛选门店</option>
+												    		#foreach($store in $stores)
+												    		<option value="$store.orgId">$store.orgName</option>
+												    		#end
+								                        </select>
+												  	</div>
+												</form>
+											</div>
+										</div>
+					                    <div class="ibox-content timeline" id="costList">
+					                    </div>
+					                    <div class="pager" id="pager"></div>
+					                </div>
+                        		</div>
+                        	</div>
+                        </div>
+                        <div id="tab-2" class="tab-pane">
+                        	<iframe  id="iFrame1" frameborder="0" style="width:100%;height:100%" onload="this.height=iFrame1.contentWindow.document.body.scrollHeight"></iframe>
+                        </div>
+               		</div>
+               	</div>
+			</div>
+		</div>
+	</div>
+	#parse('common/lib.vm')
+	<script src="$contextPath/resources/vendor/layer/layer.js"></script>
+	<script src="$contextPath/resources/vendor/laypage/laypage.js"></script>
+	<!--<script src="$contextPath/resources/vendor/webuploader/src/webuploader.js"></script>-->
+	<script src="$contextPath/resources/js/account/cost.js"></script>
+	<script src="$contextPath/resources/plugins/validator/index.js"></script>
+	<script>
+		var formValidate;
+		formValidate = plugin.validatorindex({
+            formEl: '#costForm',
+            api:'/api/addCost',
+            ajaxSuc:function(){
+            	
+            },
+            message:"成功"
+            
+        })
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    #parse('common/meta.vm')
+    <title>按钮样式</title>
+</head>
+<body class="login-bg">
+
+	<br/><br/><br/>
+    <button class="btn btn-add btn-lg"><i class="fa fa-plus"></i>增加</button>
+
+    <button class="btn btn-query btn-lg"><i class="fa fa-search"></i>查询</button>
+    <button class="btn btn-submit btn-lg">提交</button>
+    <button class="btn btn-cancel btn-lg">取消</button>
+    <button class="btn btn-view btn-lg"><i class="fa fa-info"></i>查看</button>
+    <button class="btn btn-edit btn-lg"><i class="fa fa-edit"></i>编辑</button>
+    <button class="btn btn-delete btn-lg"><i class="fa fa-remove"></i>删除</button>
+    <button class="btn btn-start btn-lg">启用</button>
+    <button class="btn btn-stop btn-lg">停用</button>
+    <button class="btn btn-main btn-lg">主色按钮</button>
+
+	<br/><br/><br/>
+
+    <button class="btn btn-add"><i class="fa fa-plus"></i>增加</button>
+    <button class="btn btn-query"><i class="fa fa-search"></i>查询</button>
+    <button class="btn btn-submit">提交</button>
+    <button class="btn btn-cancel">取消</button>
+    <button class="btn btn-view"><i class="fa fa-info"></i>查看</button>
+    <button class="btn btn-edit"><i class="fa fa-edit"></i>编辑</button>
+    <button class="btn btn-delete"><i class="fa fa-remove"></i>删除</button>
+    <button class="btn btn-start">启用</button>
+    <button class="btn btn-stop">停用</button>
+    <button class="btn btn-main">主色按钮</button>
+
+	<br/><br/><br/>
+
+    <button class="btn btn-add btn-sm"><i class="fa fa-plus"></i>增加</button>
+    <button class="btn btn-query btn-sm"><i class="fa fa-search"></i>查询</button>
+    <button class="btn btn-submit btn-sm">提交</button>
+    <button class="btn btn-cancel btn-sm">取消</button>
+    <button class="btn btn-view btn-sm"><i class="fa fa-info"></i>查看</button>
+    <button class="btn btn-edit btn-sm"><i class="fa fa-edit"></i>编辑</button>
+    <button class="btn btn-delete btn-sm"><i class="fa fa-remove"></i>删除</button>
+    <button class="btn btn-start btn-sm">启用</button>
+    <button class="btn btn-stop btn-sm">停用</button>
+    <button class="btn btn-main btn-sm">主色按钮</button>
+
+	<br/><br/><br/>
+
+    <button class="btn btn-add btn-xs"><i class="fa fa-plus"></i>增加</button>
+    <button class="btn btn-query btn-xs"><i class="fa fa-search"></i>查询</button>
+    <button class="btn btn-submit btn-xs">提交</button>
+    <button class="btn btn-cancel btn-xs">取消</button>
+    <button class="btn btn-view btn-xs"><i class="fa fa-info"></i>查看</button>
+    <button class="btn btn-edit btn-xs"><i class="fa fa-edit"></i>编辑</button>
+    <button class="btn btn-delete btn-xs"><i class="fa fa-remove"></i>删除</button>
+    <button class="btn btn-start btn-xs">启用</button>
+    <button class="btn btn-stop btn-xs">停用</button>
+    <button class="btn btn-main btn-xs">主色按钮</button>
+
+#parse('common/lib.vm')
+</body>
+</html>

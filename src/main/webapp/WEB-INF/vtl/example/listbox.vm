@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    #parse('common/meta.vm')
+    <link rel="stylesheet" href="$contextPath/resources/styles/example/listbox.css">
+    <link rel="stylesheet" href="$contextPath/resources/vendor/layerui/css/layui.css">
+    <title>listbox</title>
+</head>
+<body class="gray-bg">
+    
+    <div class="col-sm-12" id="listbox"></div>
+    <div id="paging" style="float: right; margin-right: 50px;"></div>
+
+    #parse('common/lib.vm')
+    <script src="$contextPath/resources/vendor/handlebars/handlebars.js"></script>
+    <script src="$contextPath/resources/vendor/layerui/layui.js"></script>
+    <script id="entry-template" type="text/x-handlebars-template">
+        {{#each data}}
+            <div class="col-sm-12">
+                <div class="contact-box white-bg">
+                    <div class="top"><!--title-->
+                        <h3 class="title"><strong>iphone手机充电器</strong></h3>
+                        <button type="button" class="btn btn-danger modify-btn" id="modify-btn">修改</button>
+                    </div>
+                    <div class="col-sm-2"><!--content left-->
+                        <img alt="image" class="m-t-xs img-responsive img-res" src="$contextPath/resources/images/patterns/shattered.png">
+                    </div>
+                    <div class="col-sm-5 text-center">
+                        <p class="list-info"><span class="info-text">发现时间：</span><span class="info-content">{{time}}</span></p>
+                        <p class="list-info"><span class="info-text">发现地点：</span><span class="info-content">软件园二期</span></p>
+                        <p class="list-info"><span class="info-text">发现人：</span><span class="info-content">李奕洲</span></p>
+                        <p class="list-info"><span class="info-text">领取地点：</span><span class="info-content">软件园二期</span></p>
+                        <p class="list-info"><span class="info-text">联系电话：</span><span class="info-content">15555555555</span></p>
+                        <p class="list-info"><span class="info-text">备注：</span><span class="info-content">滴滴滴滴滴滴滴</span></p>
+                        <p class="list-info"><span class="info-text">领取状态：</span><span class="info-content">待领取/未领取</span></p>
+                    </div>
+                    <div class="col-sm-5 text-center">
+                        <p class="list-info"><span class="info-text">任领人：</span><span class="info-content">张雷</span></p>
+                        <p class="list-info"><span class="info-text">身份证：</span><span class="info-content">123456789012345678</span></p>
+                        <p class="list-info"><span class="info-text">领取时间</span><span class="info-content">2016-12-12&nbsp;&nbsp;14:00</span></p>
+                        <p class="list-info"><span class="info-text">发布时间</span><span class="info-content">2016-12-12&nbsp;&nbsp;14:00</span></p>
+                        <button type="button" class="btn btn-primary receive-btn" id="get-btn">领取</button>
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+    </script>
+    <script>
+        var currentPage = 1;//默认当前页面
+        var flag = false;//false
+        $.ajax({
+            dataType: 'json',
+            type: 'post',
+            url: '/api/listbox',//api
+            data: {
+                pages:currentPage
+            },
+            success: function(data) {
+                if(data.code==0){           
+                    layui.use(['laypage', 'layer'], function(){
+                        var laypage = layui.laypage,layer = layui.layer;
+                        laypage({
+                            cont: 'paging',
+                            pages: data.data.pages,
+                            jump: function(obj, first){
+                                if(!flag){
+                                    flag = true;
+                                    var source = $("#entry-template").html();
+                                    var template = Handlebars.compile(source);
+                                    var html  = template({
+                                        data:data.data.result
+                                    });//最终生成的模版数据
+                                    $('#listbox').html(html)
+                                }else{
+                                    currentPage = obj['curr'];
+                                    ajaxForData(obj);  
+                                }
+                            }
+                        });
+                    })
+                }else{
+                    layer.msg(data.msg);
+                }           
+            },
+            error: function(textStatus) { //请求失败后调用的函数
+                toastr.error("ajax请求失败或网络异常");
+            }
+        })
+
+        $('body').on('click','#modify-btn',function(){
+            alert(1);
+        })
+        $('body').on('click','#get-btn',function(){
+            alert(2);
+        })
+        function ajaxForData(){
+            $.ajax({
+                dataType: 'json',
+                type: 'post',
+                url: '/api/listbox',//api
+                data: {
+                    pages:currentPage
+                },
+                success: function(data) {
+                    if (data.code == 0) {
+                        var source = $("#entry-template").html();
+                        var template = Handlebars.compile(source);
+                        var html  = template({
+                            data:data.data.result
+                        });//最终生成的模版数据
+                        $('#listbox').html(html)
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                },
+                error: function(textStatus) { //请求失败后调用的函数
+                    toastr.error("ajax请求失败或网络异常");
+                }
+            })  
+        }
+    </script>
+</body>
+</html>

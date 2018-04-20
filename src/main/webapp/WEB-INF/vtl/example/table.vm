@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	#parse('common/meta.vm')
+	<title>table</title>
+</head>
+<body>
+		<div class="row">
+			<div class="col-sm-12">
+				<form id="form-id">
+					<input type="text" class="form-control" name="searchName" style="display: inline-block;width: 20%">
+					<button class="btn btn-success" id="btn-search" style="display:inline-block">搜索</button>
+				</form>
+				<table id="investors-list" class="table table-hover"></table>
+    			<div id="investors-pager"></div>
+			</div>
+		</div>
+	#parse('common/lib.vm')
+	#parse('public/table.vm')
+	<script src="$contextPath/resources/vendor/layer/layer.js"></script>
+	<script>
+		var _table;
+		_table = plugin.tableindex.create({
+			container: '#investors-list',
+	            api: '/api/table',
+	            formId:'#form-id',
+	            columns: [{
+	                checkbox: true,
+	                visible:true,
+	            },{ 
+	                title:'id',
+	                field: 'id', 
+	                align: 'center',
+	                valign: 'middle',
+	                halign: "center",
+	            },{ 
+	                title:'name',
+	                field: 'name', 
+	                align: 'center',
+	                valign: 'middle',
+	                halign: "center",
+	            },{
+	            	title:'act',
+	                field: 'act', 
+	                align: 'center',
+	                valign: 'middle',
+	                halign: "center",
+	                formatter: function (value, row, index) {
+                    //value：field值，row：整行数据，index：下标，return：该字段下显示的内容
+                    return '<button id="itemModify" class="btn btn-primary" data-id="'+row['id']+'">修改</button><button id="itemDelete" data-id="'+row['id']+'" class="btn btn-danger">删除</button>'
+                	}
+	            }]
+		})
+	
+		$('#btn-search').on('click',function(e){//搜索
+			e.preventDefault();
+			_table.reload('#form-id','#investors-list');
+		});
+		$('body').on('click','#itemModify',function(){//修改
+			console.log($(this).data('id'));
+		})
+		$('body').on('click','#itemDelete',function(){//删除
+			console.log($(this).data('id'));
+		})
+	
+	</script>
+
+</body>
+</html>

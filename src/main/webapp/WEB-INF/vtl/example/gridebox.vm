@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    #parse('common/meta.vm')
+    <link rel="stylesheet" href="$contextPath/resources/vendor/toastr/toastr.min.css"><!--toastr组件css，没有使用到就不要引入-->
+    <link rel="stylesheet" href="$contextPath/dist/styles/example/gridebox.css">
+    <link rel="stylesheet" href="$contextPath/resources/vendor/layerui/css/layui.css">
+    <title>gridebox</title>
+</head>
+<body>
+<div class="wrapper wrapper-content animated fadeInRight container-fluid">
+    <div class="row show-grid">
+        <div class="col-sm-12">
+            <form class="form-inline" id="search-form" method="post">
+                <div class="form-group">
+                    <input class="form-control" id="stationName" name="stationName" placeholder="请输入站点名称">
+                </div>
+                <button type="submit" class="btn btn-query btn" id="btn-search">
+                    <i class="fa fa-search"></i>查询
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="col-sm-12" id="gridebox"></div>
+    <div id="paging" style="float: right; margin-right: 50px;"></div>
+</div>
+
+    #parse('common/lib.vm')
+    <script src="$contextPath/resources/vendor/layer/layer.js"></script><!--layer组件，没有使用到就不要引入-->
+    <script src="$contextPath/resources/vendor/toastr/toastr.min.js"></script>
+    <script src="$contextPath/resources/vendor/handlebars/handlebars.js"></script>
+    <script src="$contextPath/resources/vendor/layerui/layui.js"></script>
+    <script id="entry-template" type="text/x-handlebars-template">
+        {{#each data}}
+            <div class="col-sm-4">
+                <div class="contact-box white-bg">
+                    <h2 class="text-center title"><strong>{{title}}</strong></h2>
+                    <div class="col-sm-4">
+                        <div class="text-center">
+                            <img alt="image" class="img-circle m-t-xs img-responsive" src="{{picURL}}">
+                        </div>
+                    </div>
+                    <div class="col-sm-8">                    
+                        <p><span class="info-text">发布时间：</span><span class="info-content">{{time}}</span></p>
+                        <p><span class="info-text">类型：</span><span class="info-content">{{type}}</span></p>
+                        <p><span class="info-text">发布人：</span><span class="info-content">{{name}}</span></p>
+                    </div> 
+                    <div class="col-sm-12 text-center btn-list">
+                        <button type="button" class="btn btn-primary btn-xs" id="upBtn">上架</button>
+                        <button type="button" class="btn btn-primary btn-xs" id="downBtn">下架</button>
+                        <button type="button" class="btn btn-primary btn-xs" id="toUp">置顶</button>
+                    </div>
+                </div>    
+            </div>
+        {{/each}}
+    </script>
+    <script>
+    var currentPage = 1;//默认当前页面
+    var flag = false;//false
+    $.ajax({
+        dataType: 'json',
+        type: 'post',
+        url: '/api/gridebox',//api
+        data: {
+            pages:currentPage
+        },
+        success: function(data) {
+            if(data.code==0){           
+                layui.use(['laypage', 'layer'], function(){
+                    var laypage = layui.laypage,layer = layui.layer;
+                    laypage({
+                        cont: 'paging',
+                        pages: data.data.pages,
+                        jump: function(obj, first){
+                            if(!flag){
+                                flag = true;
+                                var source = $("#entry-template").html();
+                                var template = Handlebars.compile(source);
+                                var html  = template({
+                                    data:data.data.result
+                                });//最终生成的模版数据
+                                $('#gridebox').html(html)
+                            }else{
+                                currentPage = obj['curr'];
+                                ajaxForData(obj);  
+                            }
+                        }
+                    });
+                })
+            }else{
+                layer.msg(data.msg);
+            }           
+        },
+        error: function(textStatus) { //请求失败后调用的函数
+            toastr.error("ajax请求失败或网络异常");
+        }
+    })
+
+    $('#gridebox').on('click','#upBtn',function(){//上架
+        var $this = $(this);//￥this代表当前项
+        console.log($this);
+        alert("上架");
+    })
+    $('#gridebox').on('click','#downBtn',function(){//下架
+        var $this = $(this);
+        alert("下架");
+    })
+
+    $('#gridebox').on('click','#toUp',function(){//置顶
+        var $this = $(this);
+        alert("置顶");
+    })
+
+    function ajaxForData(){
+        $.ajax({
+            dataType: 'json',
+            type: 'post',
+            url: '/api/gridebox',//api
+            data: {
+                pages:currentPage
+            },
+            success: function(data) {
+                if (data.code == 0) {
+                    var source = $("#entry-template").html();
+                    var template = Handlebars.compile(source);
+                    var html  = template({
+                        data:data.data.result
+                    });//最终生成的模版数据
+                    $('#gridebox').html(html)
+                } else {
+                    layer.msg(data.msg);
+                }
+            },
+            error: function(textStatus) { //请求失败后调用的函数
+                toastr.error("ajax请求失败或网络异常");
+            }
+        })  
+    }
+    </script>
+</body>
+</html>
+<!-- 
+同步数据：
+        pages   分页数
+
+异步数据：
+        code: 0,
+        msg: "",
+        data: {
+            result:[{
+                title:"1",//标题
+                time:"2015-12-12 12:00",//发布时间
+                type:"普通公告",//类型
+                name:"张三",//发布人
+                picURL:"a/b"//图片地址
+            },{
+                title:"2",
+                time:"2015-12-12 12:00",
+                type:"普通公告",
+                name:"张三",
+                picURL:"a/b"
+            }]
+        }
+
+
+
+ -->
