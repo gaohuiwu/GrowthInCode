@@ -19,7 +19,7 @@ import java.util.Map;
  * Description: 实现业务层接口
  */
 @Service
-@CacheConfig(cacheNames = "sysCategory")
+//@CacheConfig(cacheNames = "sysCategory")
 public class CategoryServiceImpl implements CategoryService {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -28,11 +28,8 @@ public class CategoryServiceImpl implements CategoryService {
     CategoryMapper categoryMapper;
 
     @Override
-    @Cacheable
+    //@Cacheable
     public List<Map<String, Object>> list() {
-        for (Map<String, Object> map : categoryMapper.list()) {
-            logger.info("查询结果：" + map.get("name"));
-        }
         return categoryMapper.list();
     }
 }
