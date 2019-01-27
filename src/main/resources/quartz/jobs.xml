@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<job-scheduling-data xmlns="http://www.quartz-scheduler.org/xml/JobSchedulingData"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="http://www.quartz-scheduler.org/xml/JobSchedulingData http://www.quartz-scheduler.org/xml/job_scheduling_data_1_8.xsd"
+                     version="1.8">
+
+    <processing-directives>
+        <!--覆盖已有的jobs-->
+        <overwrite-existing-data>true</overwrite-existing-data>
+        <!--是否忽略重复的-->
+        <ignore-duplicates>false</ignore-duplicates>
+    </processing-directives>
+
+    <schedule>
+        <job>
+            <name>TestConsoleOutputJob</name>
+            <group>TestConsoleOutputJobGroup</group>
+            <description>测试输出定时任务</description>
+            <job-class>com.grow.task.job.test.TestConsoleOutputJob</job-class>
+        </job>
+        <trigger>
+            <cron>
+                <name>TestConsoleOutputJobTrigger</name>
+                <group>TestConsoleOutputJobTriggerGroup</group>
+                <job-name>TestConsoleOutputJob</job-name>
+                <cron-expression>0/30 * * * * ? *</cron-expression>
+            </cron>
+        </trigger>
+    </schedule>
+</job-scheduling-data>
